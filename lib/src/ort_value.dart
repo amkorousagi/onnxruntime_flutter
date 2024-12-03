@@ -285,7 +285,7 @@ class OrtValueTensor extends OrtValue {
   }
     
   static void updateTensorWithDataList(
-      SatOrtValueTensor tensor, Float32List data) {
+      OrtValueTensor tensor, Float32List data) {
     tensor._dataPtr.cast<ffi.Float>().asTypedList(data.length).setAll(0, data);
   }
     
