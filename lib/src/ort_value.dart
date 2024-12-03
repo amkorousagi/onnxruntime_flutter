@@ -283,7 +283,12 @@ class OrtValueTensor extends OrtValue {
     }
     throw Exception('Invalid element type');
   }
-
+    
+  static void updateTensorWithDataList(
+      SatOrtValueTensor tensor, Float32List data) {
+    tensor._dataPtr.cast<ffi.Float>().asTypedList(data.length).setAll(0, data);
+  }
+    
   static OrtValueTensor createTensorWithDataList(List data,
       [List<int>? shape]) {
     shape ??= data.shape;
