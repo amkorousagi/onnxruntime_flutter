@@ -284,11 +284,6 @@ class OrtValueTensor extends OrtValue {
     throw Exception('Invalid element type');
   }
     
-  static void updateTensorWithDataList(
-      OrtValueTensor tensor, Float32List data) {
-    tensor._dataPtr.cast<ffi.Float>().asTypedList(data.length).setAll(0, data);
-  }
-    
   static OrtValueTensor createTensorWithDataList(List data,
       [List<int>? shape]) {
     shape ??= data.shape;
@@ -362,11 +357,10 @@ class OrtValueTensor extends OrtValue {
           .cast();
       dataByteCount = dataSize * 8;
     } else if (element is Float32List) {
-      final flattenData = data.flatten<double>();
-      dataSize = flattenData.length;
+      dataSize = data[0].length;
       dataType = ONNXTensorElementDataType.float;
       dataPtr = (calloc<ffi.Float>(dataSize)
-            ..asTypedList(dataSize).setRange(0, dataSize, flattenData))
+            ..asTypedList(dataSize).setRange(0, dataSize, data[0]))
           .cast();
       dataByteCount = dataSize * 4;
     } else if (element is Float64List || element is double) {
